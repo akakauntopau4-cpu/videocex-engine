@@ -14,8 +14,8 @@ RUN pip install --no-cache-dir \
     accelerate \
     opencv-python-headless
 
-# заранее качаем веса модели в образ, чтобы не качать на каждом запуске
-RUN python -c "from transformers import AutoModelForImageSegmentation; AutoModelForImageSegmentation.from_pretrained('ZhengPeng7/BiRefNet_dynamic', trust_remote_code=True)"
+# Модель НЕ качаем во время сборки (в сборочной среде нет доступа к HuggingFace).
+# Она скачается при первом запуске воркера — там сеть есть.
 
 COPY handler.py /handler.py
 CMD ["python", "-u", "/handler.py"]
